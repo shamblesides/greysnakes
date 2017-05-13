@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ghbjk</title>
+  <style>
+    body { background-color: #e9e9e9; }
+    canvas {
+      display: block;
+      margin: auto;
+      background-color: #fbfbfb;
+      box-shadow: 0px 3px 6px #aaa;
+      border: solid 7px #888;
+      border-top: solid 2px #999;
+      border-bottom: solid 9px #777;
+    }
+  </style>
+</head>
+<body>
+<canvas></canvas>
+<script>
+  var canvas = document.querySelector('canvas');
+  canvas.width = 800;
+  canvas.height = 800;
+  var ctx = canvas.getContext('2d');
+  
+  var NUM_SNAKES = 4;
+  
+  var s = [];
+  for(var i = 0; i < NUM_SNAKES; ++i) {
+    s[i] = {};
+    s[i].x = Math.random()*canvas.width;
+    s[i].y = Math.random()*canvas.height;
+    s[i].xv = 0;
+    s[i].yv = 0;
+    s[i].xa = 0;
+    s[i].ya = 0;
+  }
+  
+  function frame() {
+    for(var i = 0; i < NUM_SNAKES; ++i) {
+      s[i].xa += Math.random() - 0.5;
+      s[i].ya += Math.random() - 0.5;
+      s[i].xa *= 0.8;
+      s[i].ya *= 0.8;
+      s[i].xv += s[i].xa;
+      s[i].yv += s[i].ya;
+      s[i].x += s[i].xv;
+      s[i].y += s[i].yv;
+      if(s[i].x < 0) { s[i].x = 0; s[i].xv *= -0.5; }
+      if(s[i].y < 0) { s[i].y = 0; s[i].yv *= -0.5; }
+      if(s[i].x >= canvas.width) { s[i].x = canvas.width - 1; s[i].xv *= -0.5; }
+      if(s[i].y >= canvas.height) { s[i].y = canvas.height - 1; s[i].yv *= -0.5; }
+      var color = Math.floor(Math.random()*256);
+      ctx.fillStyle = 'rgb('+color+','+color+','+color+')';
+      var w = Math.random()*100, h = Math.random()*100;
+      ctx.fillRect(s[i].x-w/2,s[i].y-h/2,w,h);
+    }
+    window.requestAnimationFrame(frame);
+  }
+  window.requestAnimationFrame(frame);
+</script>
+</body>
+</html>
